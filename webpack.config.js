@@ -1,6 +1,7 @@
 const path = require('path')
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlagin = require('html-webpack-plugin');
 const devMode = process.env.NODE_ENV !== 'production';
 
 
@@ -50,6 +51,10 @@ const config = {
         },
       },
       {
+        test: /\.html$/, 
+        loader: 'html-loader',
+      },
+      {
         test: /\.(ttf|eot|woff|woff2)$/,
         use: {
           loader: "file-loader",
@@ -63,12 +68,18 @@ const config = {
   },
   output: {
     path: path.resolve(__dirname, "dist"),
-    publicPath: "/",
+    publicPath: "",
     filename: 'bundle.js'
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new MiniCssExtractPlugin({filename: 'main.css'}),
+    new HtmlWebpackPlagin({
+      template: 'src/index.html',
+      inject: true,
+      pablicPath: ""
+    })
+
   ]
 };
 
