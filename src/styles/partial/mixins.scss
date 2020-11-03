@@ -19,15 +19,6 @@
     content: '';
 }
 
-@mixin textPreview($max-height: 132px, $lines: 6){
-	display: block;
-    display: -webkit-box;
-    height: $max-height;
-    -webkit-line-clamp: $lines;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
 @mixin fontStyle($font, $fontSize: 12px, $lineHeight: 1, $fontWeight: normal){
     font-family: $font;
     font-size: $fontSize;

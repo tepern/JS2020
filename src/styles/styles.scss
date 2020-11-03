@@ -1,4 +1,3 @@
-/*@import "lib/bootstrap.scss";*/
 @import "partial/fonts.scss";
 @import "partial/variables.scss";
 @import "partial/mixins.scss";
@@ -9,14 +8,14 @@ html,body,h1,h2,h3 {
 }
 
 body {
-    background: $white;
+    background: $dark;
 }
 
 body,div,p,a,span {
-    font-family:  Arial, sans-serif;
+    font-family:  $josefin, Arial, sans-serif;
     font-size: 16px;
+    line-height: 1.5em;
     font-weight: normal;
-    line-height: 22px;
     color: $base;
 
     @media(max-width: $big-mobile_width) {
@@ -38,16 +37,15 @@ h1,.h1 {
 }
 
 h2,.h2 {
-   
+   color: $gold;
 }
 
 h3,.h3 {
-    
+    color: $gold;
 }
 
 h4,.h4 {
-    
-    
+    color: $gold;    
 }
 
 h1,h2,h3,h4 {
@@ -148,6 +146,44 @@ button {
 
 .footer {
     
+}
+
+.product {
+    display: flex;
+    width: 200%;
+
+    &-slider {
+        overflow: hidden;
+    }
+
+    &__item {
+        margin-left: 10px;
+        margin-right: 10px;
+        flex-basis: calc(20% - 20px);
+    }
+
+    &-dots {
+        display: flex;
+        justify-content: center;
+
+        &__item {
+            width: 10px;
+            height: 10px;
+            margin-left: 5px;
+            margin-right: 5px;
+            background: $base;
+            vertical-align: middle;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: $transition_all;
+
+            &_active {
+                width: 14px;
+                height: 14px;
+                background: $gold;
+            }
+        }
+    }
 }
 
 .modal {

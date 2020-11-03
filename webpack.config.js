@@ -2,8 +2,8 @@ const path = require('path')
 const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlagin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 const devMode = process.env.NODE_ENV !== 'production';
-
 
 const config = {
   entry: path.resolve(__dirname,"src","index.js"),
@@ -78,8 +78,15 @@ const config = {
       template: 'src/index.html',
       inject: true,
       pablicPath: ""
+    }),
+    new CopyPlugin({
+      patterns: [
+        { 
+          from: 'src/images',
+          to: 'images'
+        },
+      ],
     })
-
   ]
 };
 
