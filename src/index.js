@@ -151,12 +151,34 @@ const topMenuItems = topMenu.map(({ title, items }) => {
 
 headerMenu.append(...topMenuItems);
 
-/*window.addEventListener('scroll', function() {
-    if(pageYOffset >= 10 && !document.querySelector(".header-menu_fixed")) {
-       headerMenu.className += " header-menu_fixed";
+const header = document.querySelector('header')
+
+window.addEventListener('scroll', function() {
+    if(pageYOffset >= 10 && !document.querySelector(".header_fixed")) {
+       header.className += " header_fixed";
     }
 
    if(pageYOffset < 10) {
-       headerMenu.className = headerMenu.className.replace(" header-menu_fixed","");
+       header.className = header.className.replace(" header_fixed","");
    }
-});*/
+});
+
+const menuItem =  document.querySelectorAll('.header-menu__item');
+
+menuItem.forEach( item => {
+
+    item.addEventListener('mouseenter', () => {
+        item.firstElementChild.classList.toggle("header-menu__link_active");
+        if(item.lastElementChild.children.length>0) {
+           item.lastElementChild.classList.toggle("sub-menu_active");
+        }
+    });
+
+    item.addEventListener('mouseleave', () => {
+        if(item.lastElementChild.children.length>0) {
+            item.lastElementChild.classList.toggle("sub-menu_active");
+        }
+        item.firstElementChild.classList.toggle("header-menu__link_active");
+    });
+
+});
