@@ -51,11 +51,10 @@ const dots = document.getElementById('pagination');
 const productDots = products.map(({ No }) => {
     const productDot = document.createElement('span');
     productDot.setAttribute('class','product-dots__item');
-    const slideIndex = 'currentSlide(' + No +')';
-    productDot.setAttribute('onclick', slideIndex);
+    productDot.setAttribute('data-index', No);
 
     return productDot;
-});
+}).splice(-products.length,5);
 
 dots.append(...productDots);
 
@@ -64,6 +63,16 @@ dots.append(...productDots);
 var slideIndex = 1;
 showSlides(slideIndex);
 
+const points = document.querySelectorAll(".product-dots__item");
+
+points.forEach( point => {
+    
+    point.addEventListener('click', function() {
+        let n = point.getAttribute('data-index');
+        currentSlide(n);
+    });
+}  
+);
 
 // Thumbnail image controls
 function currentSlide(n) {
@@ -73,15 +82,81 @@ function currentSlide(n) {
 function showSlides(n) {
   var i;
   var slides = document.getElementsByClassName("product__item");
-  var dots = document.getElementsByClassName("product-dots__item");
+  var slidesList = document.getElementById("products");
+  var dotsList = document.getElementsByClassName("product-dots__item");
   if (n > slides.length) {slideIndex = 1}
   if (n < 1) {slideIndex = slides.length}
-      for (i = 0; i < n; i++) {
-          slides[i].style.display = "none";
-      }
-  for (i = 0; i < dots.length; i++) {
-      dots[i].className = dots[i].className.replace(" product-dots__item_active", "");
+  for (i = 0; i < dotsList.length; i++) {
+      dotsList[i].className = dotsList[i].className.replace(" product-dots__item_active", "");
   }
-  slides[slideIndex-1].style.display = "block";
-  dots[slideIndex-1].className += " product-dots__item_active";
+  
+  dotsList[slideIndex-1].className += " product-dots__item_active";
+  
+  let trans = 'translate3d(' + (n-1)*(-10) + '%, 0px, 0px)';
+  
+  slidesList.style.width = products.length*20+'%';
+  slidesList.style.transform = trans;
 } 
+
+/*-----------------------------------Menu-------------------------------*/
+
+const topMenu = [ { title: "Home", items: [ "Home", "Blog", "About Us" ] }, 
+{ title: "Catalog", items: [ "Ladies", "Kids'","Luxury", "Sport", "Unisex", "Vintage", "Sale", "Accessories", "Men’s", "Search" ] }, 
+{ title: "Collections", items: [ "Ladies", "Kids'","Luxury", "Sport", "Unisex", "Vintage", "Sale", "Accessories", "Men’s", "Search" ] }, 
+{ title: "Clearance", items: [] }, { title: "Contact Us", items: [] } ];
+
+const headerMenu = document.querySelector('.header-menu');
+console.log(headerMenu);
+
+const topMenuItems = topMenu.map(({ title, items }) => {
+    const menuTitle = document.createElement('li');
+    menuTitle.setAttribute('class','header-menu__item');
+
+    const menuLink = document.createElement('a');
+    menuLink.setAttribute('class','header-menu__link');
+    menuLink.append(title);
+
+    const subMenu = document.createElement('ul');
+    subMenu.setAttribute('class',"sub-menu");
+
+    if(items.length>0) {
+
+        const subMenuList = items.map(function(item){
+            
+            const subMenuItem = document.createElement('li');
+            subMenuItem.setAttribute('class','sub-menu__item');
+
+            const subMenuLink = document.createElement('a');
+            subMenuLink.setAttribute('class','sub-menu__link');
+            subMenuLink.append(item);
+            
+            subMenuItem.append(subMenuLink);
+
+            return subMenuItem;
+        });
+
+       
+       subMenu.append(...subMenuList);
+    }
+
+    menuTitle.append(menuLink);
+
+    if(subMenu) {
+       menuTitle.append(subMenu);
+    }
+
+    return menuTitle;
+});
+
+
+headerMenu.append(...topMenuItems);
+
+/*window.addEventListener('scroll', function() {
+    if(pageYOffset >= 10 && !document.querySelector(".header-menu_fixed")) {
+       headerMenu.className += " header-menu_fixed";
+    }
+
+   if(pageYOffset < 10) {
+       headerMenu.className = headerMenu.className.replace(" header-menu_fixed","");
+   }
+});*/
