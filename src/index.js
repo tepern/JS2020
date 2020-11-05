@@ -171,7 +171,7 @@ window.addEventListener('scroll', function() {
    }
 });
 
-const menuItem =  document.querySelectorAll('.header-menu__item');
+const menuItem = document.querySelectorAll('.header-menu__item');
 
 menuItem.forEach( item => {
 
@@ -190,3 +190,84 @@ menuItem.forEach( item => {
     });
 
 });
+
+/*----------------Filter + Modal-------------------------*/
+
+const watches = document.querySelectorAll('.product__item');
+
+
+for(let i=0; i<watches.length; i++) {
+    
+    watches[i].addEventListener('click', function() {
+        let title = watches[i].children;
+        const text = title[1];
+        const tcontent = text.textContent;
+        
+        productFilter(tcontent);
+    });
+}
+
+function productFilter(title) {
+    const productResult = products.filter(product => product.name == title );
+
+    const productModal = productResult.map(({ name, price, img, description, images }) => {
+        const modalTitle = document.createElement('p');
+        modalTitle.append(name);
+        modalTitle.setAttribute('class','modal__title');
+
+        const modalImage = document.createElement('div');
+        modalImage.setAttribute('class','modal__img');
+        const modalImg = document.createElement('img');
+        let src = 'images/products/'+ img;
+        modalImg.setAttribute('src', src);
+        modalImage.append(modalImg);
+
+        const modalLeft = document.createElement('div');
+        modalLeft.setAttribute('class','modal__left');
+
+        const modalImages = document.createElement('div');
+        modalImages.setAttribute('class','modal-image');
+
+        const imageList = images.map(function(image) {
+           const imageItem = document.createElement('img');
+           let srcImg = 'images/products/'+ image;
+           modalImg.setAttribute('src', srcImg);
+        });
+
+        modalImages.append(...imageList);
+        modalLeft.append(modalImage); 
+        modalLeft.append(modalImages); 
+
+        const modalRight = document.createElement('div');
+        modalLeft.setAttribute('class','modal__right');
+
+        const modalPrice = document.createElement('p');
+        modalPrice.setAttribute('class','modal__price');
+        modalPrice.append('$', price);
+
+        const modalText = document.createElement('p');
+        modalText.setAttribute('class','modal__text');
+        modalText.append(description);
+
+        const modalBtn = document.createElement('a');
+        modalBtn.setAttribute('class','modal__btn btn');
+        modalBtn.append('Add to Cart');
+
+        modalRight.append(modalTitle);
+        modalRight.append(modalPrice);
+        modalRight.append(modalText);
+        modalRight.append(modalBtn);
+
+        const modalContent = document.createElement('div');
+        modalContent.setAttribute('class','modal__content');
+        modalContent.append(modalLeft, modalRight);
+
+        return modalContent;
+    });
+
+    const modal = document.querySelector('.modal');
+    modal.append(productModal);
+    modal.className += " modal_show";  
+}
+
+
