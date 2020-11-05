@@ -21,30 +21,38 @@ const products = [ { No: '1', SKU: "327038", name: 'Tommy Hilfiger Blue Ion Plat
 
 const container = document.getElementById('products');
 
-const containerProducts = products.map(({ name, price, img }) => {
-    const productTitle = document.createElement('p');
-    productTitle.append(name);
-    productTitle.setAttribute('class','product__title');
 
-    const productImage = document.createElement('div');
-    productImage.setAttribute('class','product__img');
-    const productImg = document.createElement('img');
-    let src = '../images/products/'+ img;
-    productImg.setAttribute('src', src);
-    productImage.append(productImg);
-
-    const productPrice = document.createElement('p');
-    productPrice.setAttribute('class','product__price');
-    productPrice.append('$', price);
-
-    const product = document.createElement('div');
-    product.setAttribute('class','product__item');
-    product.append(productImage, productTitle, productPrice);
-
-    return product;
+const productPromise = new Promise ((res,rej) => {
+    setTimeout(() => { res(products) }, 4000)
 });
 
-container.append(...containerProducts);
+const productRes = productPromise.then( function(res){ 
+    const test = res.forEach( function({ name, price, img }) {
+        const productTitle = document.createElement('p');
+        productTitle.append(name);
+        productTitle.setAttribute('class','product__title');
+
+        const productImage = document.createElement('div');
+        productImage.setAttribute('class','product__img');
+        const productImg = document.createElement('img');
+        let src = 'images/products/'+ img;
+        productImg.setAttribute('src', src);
+        productImage.append(productImg);
+
+        const productPrice = document.createElement('p');
+        productPrice.setAttribute('class','product__price');
+        productPrice.append('$', price);
+
+        const product = document.createElement('div');
+        product.setAttribute('class','product__item');
+        product.append(productImage, productTitle, productPrice);
+
+        const container = document.getElementById('products');
+        container.append(product);
+    });
+    
+    return test;
+});
 
 const dots = document.getElementById('pagination');
 
