@@ -52,7 +52,31 @@ const productRes = productPromise.then( function(res){
     });
     
     return test;
-});
+}).then(function(res) {
+    const watches = document.querySelectorAll('.product__item');
+
+
+    for(let i=0; i<watches.length; i++) {
+        
+        watches[i].addEventListener('click', function() {
+            let title = watches[i].children;
+            const text = title[1];
+            const tcontent = text.textContent;
+            productFilter(tcontent);
+        });
+    }
+}
+    
+).then(function(res) {
+   const closeBtn = document.querySelector('.modal__close');
+    closeBtn.addEventListener('click',function() {
+        const modal = document.querySelector('.modal');
+        const modalContent = modal.querySelector('.modal__content');
+        modal.className = modal.className.replace(" modal_show", "");
+        modalContent.parentNode.removeChild(modalContent);
+    })
+}
+);
 
 const dots = document.getElementById('pagination');
 
@@ -68,7 +92,7 @@ dots.append(...productDots);
 
 /*----------------Slider--------------------*/
 
-var slideIndex = 1;
+let slideIndex = 1;
 showSlides(slideIndex);
 
 const points = document.querySelectorAll(".product-dots__item");
@@ -88,10 +112,10 @@ function currentSlide(n) {
 }
 
 function showSlides(n) {
-  var i;
-  var slides = document.getElementsByClassName("product__item");
-  var slidesList = document.getElementById("products");
-  var dotsList = document.getElementsByClassName("product-dots__item");
+  let i;
+  const slides = document.getElementsByClassName("product__item");
+  const slidesList = document.getElementById("products");
+  const dotsList = document.getElementsByClassName("product-dots__item");
   if (n > slides.length) {slideIndex = 1}
   if (n < 1) {slideIndex = slides.length}
   for (i = 0; i < dotsList.length; i++) {
@@ -193,20 +217,6 @@ menuItem.forEach( item => {
 
 /*----------------Filter + Modal-------------------------*/
 
-const watches = document.querySelectorAll('.product__item');
-
-
-for(let i=0; i<watches.length; i++) {
-    
-    watches[i].addEventListener('click', function() {
-        let title = watches[i].children;
-        const text = title[1];
-        const tcontent = text.textContent;
-        
-        productFilter(tcontent);
-    });
-}
-
 function productFilter(title) {
     const productResult = products.filter(product => product.name == title );
 
@@ -227,14 +237,18 @@ function productFilter(title) {
 
         const modalImages = document.createElement('div');
         modalImages.setAttribute('class','modal-image');
-
+        
         const imageList = images.map(function(image) {
            const imageItem = document.createElement('img');
            let srcImg = 'images/products/'+ image;
-           modalImg.setAttribute('src', srcImg);
-        });
+           imageItem.setAttribute('src', srcImg);
 
+           return imageItem;
+
+        });
+        
         modalImages.append(...imageList);
+
         modalLeft.append(modalImage); 
         modalLeft.append(modalImages); 
 
@@ -257,7 +271,7 @@ function productFilter(title) {
         modalRight.append(modalPrice);
         modalRight.append(modalText);
         modalRight.append(modalBtn);
-
+        
         const modalContent = document.createElement('div');
         modalContent.setAttribute('class','modal__content');
         modalContent.append(modalLeft, modalRight);
@@ -266,7 +280,9 @@ function productFilter(title) {
     });
 
     const modal = document.querySelector('.modal');
-    modal.append(productModal);
+    const modalWrap = document.querySelector('.modal-wrap');
+    
+    modalWrap.append(productModal[0]);
     modal.className += " modal_show";  
 }
 
